@@ -1,189 +1,67 @@
-export const mediasData = {
-  "sport-med": {
-    id: "sport-med",
-    name: "Sport MED",
-    slug: "sport-med",
-    tagline: "L'actualité du sport régional",
-    description: "Sport, événements sportifs et actualité des clubs de Provence-Alpes-Côte d'Azur",
-    longDescription:
-      "Sport MED couvre l'actualité sportive de la région avec passion et expertise. Des matchs des équipes régionales aux grands événements sportifs, nous vous tenons au courant de tous les enjeux du sport local.",
-    theme: "Sport & Loisirs",
-    color: "from-slate-700 to-slate-900",
-    icon: "Trophy",
-    coverage: "Toute la région PACA",
-    founded: "2015",
-    website: "https://sport-med.fr",
-    specialties: ["Football", "Rugby", "Athlétisme", "Événements sportifs", "Jeunesse"],
-    team: "8 journalistes",
-    audience: "60 000 lecteurs mensuels",
-    bgImage: "/sport-med-background.jpg",
-  },
-  marcelle: {
-    id: "marcelle",
-    name: "Marcelle",
-    slug: "marcelle",
-    tagline: "Votre source d'actualité régionale",
-    description: "Actualité générale, politique et initiatives de la région",
-    longDescription:
-      "Marcelle est un média généraliste couvrant tous les aspects de la vie régionale. De la politique locale aux initiatives citoyennes, nous décryptez l'actualité qui façonne notre territoire.",
-    theme: "Actualité Générale",
-    color: "from-purple-400 to-pink-300",
-    icon: "Newspaper",
-    coverage: "Provence-Alpes-Côte d'Azur",
-    founded: "2018",
-    website: "https://marcelle.fr",
-    specialties: ["Politique", "Économie", "Société", "Culture", "Environnement"],
-    team: "12 journalistes",
-    audience: "75 000 lecteurs mensuels",
-    bgImage: "/marcelle-background.jpg",
-  },
-  mprovence: {
-    id: "mprovence",
-    name: "mprovence",
-    slug: "mprovence",
-    tagline: "Engagé naturel de bonnes idées",
-    description: "Environnement, développement durable et nature en Provence",
-    longDescription:
-      "mprovence valorise les initiatives écologiques et la préservation des espaces naturels. Nous explorons les solutions durables et les bons gestes pour une Provence verte et respectueuse de la nature.",
-    theme: "Environnement & Nature",
-    color: "from-green-400 to-emerald-500",
-    icon: "Leaf",
-    coverage: "Provence",
-    founded: "2016",
-    website: "https://mprovence.fr",
-    specialties: ["Écologie", "Agriculture bio", "Tourisme vert", "Aménagement territoire", "Biodiversité"],
-    team: "6 journalistes",
-    audience: "40 000 lecteurs mensuels",
-    bgImage: "/mprovence-background.jpg",
-  },
-  lehtm: {
-    id: "lehtm",
-    name: "LEHTM",
-    slug: "lehtm",
-    tagline: "L'actualité du territoire",
-    description: "Actualités hyperlocales et initiatives des territoires",
-    longDescription:
-      "LEHTM se concentre sur l'actualité hyperlocale avec des reportages en profondeur. Nous donnons une voix aux territoires et aux initiatives citoyennes souvent oubliées des grands médias.",
-    theme: "Actualité Locale",
-    color: "from-slate-900 to-slate-800",
-    icon: "MapPin",
-    coverage: "Toute la région PACA",
-    founded: "2017",
-    website: "https://lehtm.fr",
-    specialties: ["Hyperlocal", "Initiatives citoyennes", "Vie de quartier", "Social", "Proximité"],
-    team: "10 journalistes",
-    audience: "45 000 lecteurs mensuels",
-    bgImage: "/lehtm-background.jpg",
-  },
-  "frequence-mistral": {
-    id: "frequence-mistral",
-    name: "Frequence Mistral",
-    slug: "frequence-mistral",
-    tagline: "Engagez naturel de bonnes idées",
-    description: "Radio généraliste avec musique, infos et divertissement",
-    longDescription:
-      "Frequence Mistral est une radio généraliste proposant actualités, musique, infos pratiques et divertissement. Une fenêtre sur la région avec des émissions en direct et un lien constant avec les auditeurs.",
-    theme: "Radio & Divertissement",
-    color: "from-amber-400 to-yellow-500",
-    icon: "Radio",
-    coverage: "Provence-Alpes-Côte d'Azur",
-    founded: "2012",
-    website: "https://frequence-mistral.fr",
-    specialties: ["Actualités", "Musique", "Jeux", "Infos pratiques", "Émissions spécialisées"],
-    team: "15 animateurs",
-    audience: "90 000 auditeurs mensuels",
-    bgImage: "/frequence-mistral-background.jpg",
-  },
-  "bleu-tomate": {
-    id: "bleu-tomate",
-    name: "bleu tomate",
-    slug: "bleu-tomate",
-    tagline: "Engagez naturel de bonnes idées",
-    description: "Podcast et contenus audio innovants sur les enjeux régionaux",
-    longDescription:
-      "bleu tomate produit des contenus audio innovants et des podcasts explorant les enjeux de notre région. Du débat d'idées aux histoires inspirantes, nous créons du contenu audio engagé et de qualité.",
-    theme: "Podcast & Audio",
-    color: "from-green-600 to-green-700",
-    icon: "Headphones",
-    coverage: "Provence-Alpes-Côte d'Azur",
-    founded: "2019",
-    website: "https://bleu-tomate.fr",
-    specialties: ["Podcasts", "Débat", "Histoires", "Reportages audio", "Enquêtes"],
-    team: "5 producteurs",
-    audience: "30 000 auditeurs mensuels",
-    bgImage: "/bleu-tomate-background.jpg",
-  },
+// Ce fichier est maintenant obsolète - les données viennent de WordPress
+// Conservé pour compatibilité temporaire pendant la migration
+
+import { wp } from './wordpress'
+import { transformMediaPartners, transformArticles } from './transformers'
+
+/**
+ * Récupérer tous les médias partenaires depuis WordPress
+ * @deprecated Utilisez directement wp.getMediaPartners() et transformMediaPartners()
+ */
+export async function getMediasData() {
+  try {
+    const wpMedias = await wp.getMediaPartners()
+    const medias = transformMediaPartners(wpMedias)
+    
+    // Convertir en objet avec slug comme clé (pour compatibilité)
+    const mediasMap: Record<string, any> = {}
+    medias.forEach((media) => {
+      mediasMap[media.slug] = {
+        id: media.id,
+        name: media.name,
+        slug: media.slug,
+        tagline: media.tagline,
+        description: media.description,
+        longDescription: media.longDescription,
+        theme: media.theme,
+        color: media.color,
+        icon: media.icon,
+        coverage: media.coverage,
+        founded: media.founded,
+        website: media.website,
+        specialties: media.specialties,
+        team: media.team,
+        audience: media.audience,
+        bgImage: media.bgImage,
+      }
+    })
+    
+    return mediasMap
+  } catch (error) {
+    console.error('Error fetching media partners:', error)
+    // Retourner un objet vide en cas d'erreur
+    return {}
+  }
 }
 
-export const getMediaArticles = (mediaSlug: string) => {
-  const articles = [
-    {
-      id: 1,
-      title: "OGC Nice remporte une victoire spectaculaire face à Marseille",
-      excerpt: "Le match est allé en prolongation avec un but décisif en toute fin de rencontre.",
-      media: "Sport MED",
-      mediaSlug: "sport-med",
-      category: "Football",
-      date: "2024-01-15",
-      readTime: "5 min",
-      image: "/football-match-stadium.png",
-    },
-    {
-      id: 2,
-      title: "Politique régionale: nouvelles mesures pour 2024",
-      excerpt: "Les élus régionaux dévoilent leur programme pour les mois à venir.",
-      media: "Marcelle",
-      mediaSlug: "marcelle",
-      category: "Politique",
-      date: "2024-01-14",
-      readTime: "7 min",
-      image: "/regional-government-meeting.jpg",
-    },
-    {
-      id: 3,
-      title: "Initiative verte: nouvelle réserve naturelle en Provence",
-      excerpt: "Les habitants se mobilisent pour protéger un espace naturel unique.",
-      media: "mprovence",
-      mediaSlug: "mprovence",
-      category: "Environnement",
-      date: "2024-01-14",
-      readTime: "6 min",
-      image: "/nature-reserve-provence-green-forest.jpg",
-    },
-    {
-      id: 4,
-      title: "Vie de quartier: les initiatives qui changent Marseille",
-      excerpt: "Découvrez les projets des habitants du quartier de la Plaine.",
-      media: "LEHTM",
-      mediaSlug: "lehtm",
-      category: "Actualité Locale",
-      date: "2024-01-13",
-      readTime: "8 min",
-      image: "/marseille-neighborhood-community.jpg",
-    },
-    {
-      id: 5,
-      title: "Podcast: les entrepreneurs qui font la région",
-      excerpt: "Écoutez les histoires inspirantes d'entrepreneurs locaux engagés.",
-      media: "bleu tomate",
-      mediaSlug: "bleu-tomate",
-      category: "Podcast",
-      date: "2024-01-13",
-      readTime: "45 min",
-      image: "/podcast-microphone-studio-recording.jpg",
-    },
-    {
-      id: 6,
-      title: "Musique: les talents régionaux à découvrir",
-      excerpt: "Écoutez les nouveaux artistes mis en avant par Frequence Mistral.",
-      media: "Frequence Mistral",
-      mediaSlug: "frequence-mistral",
-      category: "Musique",
-      date: "2024-01-12",
-      readTime: "4 min",
-      image: "/live-music-concert-stage-lights.jpg",
-    },
-  ]
-
-  return articles.filter((article) => article.mediaSlug === mediaSlug)
+/**
+ * Récupérer les articles d'un média depuis WordPress
+ * @deprecated Utilisez directement wp.getArticles() avec media_slug
+ */
+export async function getMediaArticles(mediaSlug: string) {
+  try {
+    const result = await wp.getArticles({
+      media_slug: mediaSlug,
+      per_page: 10,
+      _embed: true,
+    })
+    
+    return transformArticles(result.data)
+  } catch (error) {
+    console.error('Error fetching articles:', error)
+    return []
+  }
 }
+
+// Export pour compatibilité avec l'ancien code
+export const mediasData = getMediasData()

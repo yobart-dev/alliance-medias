@@ -4,35 +4,144 @@ import { Footer } from '@/components/footer'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { mediasData, getMediaArticles } from '@/lib/media-data'
+import { wp } from '@/lib/wordpress'
+import { transformMediaPartner, transformArticles } from '@/lib/transformers'
+import { mockMediaPartners, getMockArticlesByMedia } from '@/lib/mock-data'
 import { ExternalLink, MapPin, Users, Calendar, TrendingUp, Clock } from 'lucide-react'
 import Link from 'next/link'
-import { Briefcase, Radio, Video, Globe, UsersIcon } from 'lucide-react'
+import { Briefcase, Radio, Video, Globe, UsersIcon, Trophy, Leaf, Newspaper, Headphones, MapPin as MapPinIcon } from 'lucide-react'
+import Image from 'next/image'
+import type { Metadata } from 'next'
 
-const iconMap = {
+const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   'Briefcase': Briefcase,
   'Users': UsersIcon,
-  'Newspaper': UsersIcon,
+  'Newspaper': Newspaper,
   'Globe': Globe,
   'Radio': Radio,
   'Video': Video,
+  'Trophy': Trophy,
+  'Leaf': Leaf,
+  'Headphones': Headphones,
+  'MapPin': MapPinIcon,
+}
+
+export const revalidate = 300 // Revalider toutes les 5 minutes (ISR)
+
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  let wpMedia = await wp.getMediaPartnerBySlug(params.slug)
+  
+  // Si WordPress n'est pas disponible, utiliser les données mockées
+  if (!wpMedia) {
+    const mockMedia = mockMediaPartners.find(m => m.slug === params.slug)
+    if (!mockMedia) {
+      return {
+        title: 'Média non trouvé - Alliance des Médias',
+      }
+    }
+    return {
+      title: `${mockMedia.name} - Alliance des Médias PACA`,
+      description: mockMedia.description || mockMedia.tagline,
+      openGraph: {
+        title: `${mockMedia.name} - Alliance des Médias PACA`,
+        description: mockMedia.description || mockMedia.tagline,
+        type: 'website',
+      },
+    }
+  }
+
+  const media = transformMediaPartner(wpMedia)
+
+  return {
+    title: `${media.name} - Alliance des Médias PACA`,
+    description: media.description || media.tagline,
+    openGraph: {
+      title: `${media.name} - Alliance des Médias PACA`,
+      description: media.description || media.tagline,
+      type: 'website',
+    },
+  }
 }
 
 export async function generateStaticParams() {
-  return Object.keys(mediasData).map((slug) => ({
-    slug: slug,
-  }))
+  try {
+    const wpMedias = await wp.getMediaPartners()
+    
+    // Si WordPress n'est pas disponible, utiliser les slugs des médias mockés
+    if (wpMedias.length === 0) {
+      return mockMediaPartners.map((media) => ({
+        slug: media.slug,
+      }))
+    }
+    
+    return wpMedias.map((media) => ({
+      slug: media.slug,
+    }))
+  } catch (error) {
+    console.error('Error generating static params for media pages:', error)
+    // Retourner les slugs des médias mockés en fallback
+    return mockMediaPartners.map((media) => ({
+      slug: media.slug,
+    }))
+  }
 }
 
-export default function MediaPage({ params }: { params: { slug: string } }) {
-  const media = mediasData[params.slug as keyof typeof mediasData]
+export default async function MediaPage({ params }: { params: { slug: string } }) {
+  // Récupérer le média partenaire depuis WordPress
+  let wpMedia = await wp.getMediaPartnerBySlug(params.slug)
   
-  if (!media) {
-    notFound()
+  // Si WordPress n'est pas disponible, utiliser les données mockées
+  if (!wpMedia) {
+    const mockMedia = mockMediaPartners.find(m => m.slug === params.slug)
+    if (!mockMedia) {
+      notFound()
+    }
+    // Créer un objet compatible avec transformMediaPartner
+    wpMedia = {
+      id: 0,
+      title: { rendered: mockMedia.name },
+      slug: mockMedia.slug,
+      acf: {
+        name: mockMedia.name,
+        tagline: mockMedia.tagline,
+        description: mockMedia.description,
+        long_description: mockMedia.longDescription,
+        theme: mockMedia.theme,
+        color: mockMedia.color,
+        icon: mockMedia.icon,
+        coverage: mockMedia.coverage,
+        founded: mockMedia.founded,
+        website: mockMedia.website,
+        specialties: mockMedia.specialties,
+        team: mockMedia.team,
+        audience: mockMedia.audience,
+      },
+    } as any
   }
 
-  const Icon = iconMap[media.icon as keyof typeof iconMap]
-  const articles = getMediaArticles(media.slug)
+  const media = transformMediaPartner(wpMedia)
+  const Icon = iconMap[media.icon] || Newspaper
+
+  // Récupérer les articles du média
+  let articles = []
+  try {
+    const articlesResult = await wp.getArticles({
+      media_slug: params.slug,
+      per_page: 6,
+      _embed: true,
+    })
+    
+    // Si WordPress n'est pas disponible, utiliser les données mockées
+    if (articlesResult.data.length === 0) {
+      articles = getMockArticlesByMedia(params.slug)
+    } else {
+      articles = transformArticles(articlesResult.data)
+    }
+  } catch (error) {
+    console.error('Error fetching articles for media:', error)
+    // En cas d'erreur, utiliser les données mockées
+    articles = getMockArticlesByMedia(params.slug)
+  }
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -176,15 +285,17 @@ export default function MediaPage({ params }: { params: { slug: string } }) {
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {articles.map((article) => (
-                  <Link key={article.id} href={`/article/${article.id}`}>
+                  <Link key={article.id} href={`/article/${article.slug}`}>
                     <Card className="h-full overflow-hidden group hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
                       <div className="aspect-video relative overflow-hidden bg-muted">
-                        <img
+                        <Image
                           src={article.image || "/placeholder.svg"}
                           alt={article.title}
-                          className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-300"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                         />
-                        <Badge className="absolute top-3 left-3">
+                        <Badge className="absolute top-3 left-3 z-10">
                           {article.category}
                         </Badge>
                       </div>
