@@ -41,7 +41,7 @@ export function Header() {
             <Link href="/" className="flex items-center gap-2">
               <div className="flex items-center gap-2">
                 <div className="h-8 w-8 rounded-full bg-primary" />
-                <span className="font-heading text-xl font-bold">L'Alliance des Médias</span>
+                <span className="font-heading text-xl font-bold">L'Alliance Médias</span>
               </div>
             </Link>
 

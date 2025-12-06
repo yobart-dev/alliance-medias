@@ -34,15 +34,15 @@ export default async function HomePage() {
   let mediaPartners = []
 
   try {
-    // Récupérer les 6 derniers articles
+    // Récupérer les 12 derniers articles (4 en haut + 8 pour le carousel)
     const articlesResult = await wp.getArticles({
-      per_page: 6,
+      per_page: 12,
       _embed: true,
     })
     
     // Si WordPress n'est pas disponible, utiliser les données mockées
     if (articlesResult.data.length === 0) {
-      recentArticles = mockArticles.slice(0, 6)
+      recentArticles = mockArticles
     } else {
       recentArticles = transformArticles(articlesResult.data)
     }
@@ -59,7 +59,7 @@ export default async function HomePage() {
   } catch (error) {
     console.error('Error fetching data for homepage:', error)
     // En cas d'erreur, utiliser les données mockées pour l'aperçu
-    recentArticles = mockArticles.slice(0, 6)
+    recentArticles = mockArticles
     mediaPartners = mockMediaPartners
   }
 
@@ -68,8 +68,8 @@ export default async function HomePage() {
       <Header />
       <main className="flex-1">
         <Hero />
-        <MediaGrid mediaPartners={mediaPartners} />
         <NewsFeed articles={recentArticles} />
+        <MediaGrid mediaPartners={mediaPartners} />
         <AboutSection />
       </main>
       <Footer />

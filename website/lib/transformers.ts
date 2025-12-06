@@ -13,6 +13,8 @@ export interface Article {
   media: string
   mediaSlug: string
   category: string
+  mainCategory?: string  // Nouvelle catégorie principale
+  subCategory?: string   // Nouvelle sous-catégorie
   date: string
   readTime: string
   image: string

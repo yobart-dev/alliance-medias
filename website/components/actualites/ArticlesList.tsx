@@ -9,6 +9,7 @@ import { Clock, Search, SlidersHorizontal } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 import type { Article } from '@/lib/transformers'
+import { CategoryFilter } from './CategoryFilter'
 
 interface ArticlesListProps {
   articles: Article[]
@@ -17,14 +18,43 @@ interface ArticlesListProps {
 }
 
 export function ArticlesList({ articles, categories, medias }: ArticlesListProps) {
-  const [selectedCategory, setSelectedCategory] = useState('Tous')
+  const [selectedMainCategory, setSelectedMainCategory] = useState<string | null>(null)
+  const [selectedSubCategory, setSelectedSubCategory] = useState<string | null>(null)
   const [selectedMedia, setSelectedMedia] = useState('Tous')
   const [searchQuery, setSearchQuery] = useState('')
   const [showFilters, setShowFilters] = useState(false)
 
+  const handleMainCategoryClick = (categoryId: string) => {
+    if (categoryId === '') {
+      // Reset filters
+      setSelectedMainCategory(null)
+      setSelectedSubCategory(null)
+    } else if (selectedMainCategory === categoryId) {
+      // Deselect if same category
+      setSelectedMainCategory(null)
+      setSelectedSubCategory(null)
+    } else {
+      setSelectedMainCategory(categoryId)
+      setSelectedSubCategory(null) // Reset sub-category when main changes
+    }
+  }
+
+  const handleSubCategoryClick = (mainCategoryId: string, subCategoryId: string) => {
+    setSelectedMainCategory(mainCategoryId)
+    setSelectedSubCategory(subCategoryId)
+  }
+
   const filteredArticles = useMemo(() => {
     return articles.filter(article => {
-      const matchesCategory = selectedCategory === 'Tous' || article.category === selectedCategory
+      // Filtrage par catégorie hiérarchique
+      let matchesCategory = true
+      if (selectedMainCategory) {
+        matchesCategory = article.mainCategory === selectedMainCategory
+        if (selectedSubCategory) {
+          matchesCategory = matchesCategory && article.subCategory === selectedSubCategory
+        }
+      }
+      
       const matchesMedia = selectedMedia === 'Tous' || article.media === selectedMedia
       const matchesSearch = searchQuery === '' || 
         article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -32,11 +62,20 @@ export function ArticlesList({ articles, categories, medias }: ArticlesListProps
       
       return matchesCategory && matchesMedia && matchesSearch
     })
-  }, [articles, selectedCategory, selectedMedia, searchQuery])
+  }, [articles, selectedMainCategory, selectedSubCategory, selectedMedia, searchQuery])
 
   return (
     <>
-      {/* Filters Section */}
+      {/* Category Filter - Horizontal Pills */}
+      <CategoryFilter
+        selectedMainCategory={selectedMainCategory}
+        selectedSubCategory={selectedSubCategory}
+        onMainCategoryClick={handleMainCategoryClick}
+        onSubCategoryClick={handleSubCategoryClick}
+        articles={articles}
+      />
+
+      {/* Filters Section - Search and Media */}
       <section className="sticky top-16 z-40 bg-background/95 backdrop-blur border-b border-border">
         <div className="container mx-auto px-4 py-4">
           <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
@@ -62,20 +101,9 @@ export function ArticlesList({ articles, categories, medias }: ArticlesListProps
               Filtres
             </Button>
 
-            {/* Desktop Filters */}
+            {/* Desktop Filters - Media only */}
             <div className="hidden lg:flex items-center gap-3">
-              <span className="text-sm font-medium text-muted-foreground">Filtrer par:</span>
-              <select
-                value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
-                className="flex h-9 items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-              >
-                {categories.map((cat) => (
-                  <option key={cat} value={cat}>
-                    {cat === 'Tous' ? 'Toutes catégories' : cat}
-                  </option>
-                ))}
-              </select>
+              <span className="text-sm font-medium text-muted-foreground">Média:</span>
               <select
                 value={selectedMedia}
                 onChange={(e) => setSelectedMedia(e.target.value)}
@@ -90,23 +118,9 @@ export function ArticlesList({ articles, categories, medias }: ArticlesListProps
             </div>
           </div>
 
-          {/* Mobile Filters */}
+          {/* Mobile Filters - Media only */}
           {showFilters && (
             <div className="lg:hidden mt-4 space-y-4 pb-4 border-t border-border pt-4">
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Catégorie</label>
-                <select
-                  value={selectedCategory}
-                  onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-                >
-                  {categories.map((cat) => (
-                    <option key={cat} value={cat}>
-                      {cat === 'Tous' ? 'Toutes catégories' : cat}
-                    </option>
-                  ))}
-                </select>
-              </div>
               <div className="space-y-2">
                 <label className="text-sm font-medium">Média</label>
                 <select
@@ -133,12 +147,12 @@ export function ArticlesList({ articles, categories, medias }: ArticlesListProps
             <p className="text-sm text-muted-foreground">
               {filteredArticles.length} article{filteredArticles.length > 1 ? 's' : ''} trouvé{filteredArticles.length > 1 ? 's' : ''}
             </p>
-            {(selectedCategory !== 'Tous' || selectedMedia !== 'Tous' || searchQuery) && (
+            {(selectedMainCategory || selectedMedia !== 'Tous' || searchQuery) && (
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => {
-                  setSelectedCategory('Tous')
+                  handleMainCategoryClick('')
                   setSelectedMedia('Tous')
                   setSearchQuery('')
                 }}

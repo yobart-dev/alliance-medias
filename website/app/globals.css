@@ -1,124 +1,10 @@
 @import 'tailwindcss';
-@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
-
-/* Animations personnalisées */
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes slide-in-from-bottom {
-  from {
-    transform: translateY(20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-@keyframes slide-in-from-left {
-  from {
-    transform: translateX(-20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-@keyframes slide-in-from-right {
-  from {
-    transform: translateX(20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-@keyframes scale-in {
-  from {
-    transform: scale(0.95);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-.animate-in {
-  animation-fill-mode: both;
-}
-
-.fade-in {
-  animation: fade-in 0.6s ease-out;
-}
-
-.slide-in-from-bottom-4 {
-  animation: slide-in-from-bottom 0.6s ease-out;
-}
-
-.slide-in-from-bottom-6 {
-  animation: slide-in-from-bottom 0.8s ease-out;
-}
-
-.slide-in-from-left-4 {
-  animation: slide-in-from-left 0.6s ease-out;
-}
-
-.slide-in-from-right-4 {
-  animation: slide-in-from-right 0.6s ease-out;
-}
-
-.scale-in {
-  animation: scale-in 0.4s ease-out;
-}
-
-.duration-700 {
-  animation-duration: 700ms;
-}
-
-.duration-1000 {
-  animation-duration: 1000ms;
-}
-
-.delay-150 {
-  animation-delay: 150ms;
-}
-
-.delay-300 {
-  animation-delay: 300ms;
-}
-
-.delay-500 {
-  animation-delay: 500ms;
-}
-
-.delay-700 {
-  animation-delay: 700ms;
-}
 
 /* Smooth scroll */
 html {
   scroll-behavior: smooth;
-}
-
-/* Amélioration des transitions globales */
-* {
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
 }
 
 :root {
@@ -267,4 +153,19 @@ html {
     font-family: var(--font-heading);
     font-weight: 700;
   }
+}
+
+/* Leaflet custom styles */
+.leaflet-popup-content-wrapper {
+  border-radius: 12px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
+}
+
+.leaflet-popup-tip {
+  box-shadow: 0 3px 14px rgba(0, 0, 0, 0.1) !important;
+}
+
+.custom-marker {
+  background: transparent !important;
+  border: none !important;
 }
