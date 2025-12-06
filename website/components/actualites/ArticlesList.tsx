@@ -10,6 +10,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import type { Article } from '@/lib/transformers'
 import { CategoryFilter } from './CategoryFilter'
+import { getCategoryGradientStyle } from '@/lib/categories-data'
 
 interface ArticlesListProps {
   articles: Article[]
@@ -181,8 +182,11 @@ export function ArticlesList({ articles, categories, medias }: ArticlesListProps
                         className="object-cover group-hover:scale-105 transition-transform duration-300"
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       />
-                      <Badge className="absolute top-3 left-3 z-10">
-                        {article.category}
+                      <Badge 
+                        className="absolute top-3 left-3 z-10 text-white font-semibold shadow-lg"
+                        style={getCategoryGradientStyle(article.subCategory || article.mainCategory || article.category)}
+                      >
+                        {article.subCategory || article.category}
                       </Badge>
                     </div>
                     
