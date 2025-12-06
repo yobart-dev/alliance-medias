@@ -51,16 +51,24 @@ export function MediaFilter({ selectedMedia, onMediaClick, articles }: MediaFilt
                 key={media.slug}
                 onClick={() => !isEmpty && onMediaClick(media.name)}
                 disabled={isEmpty}
+                style={
+                  !isActive && !isEmpty
+                    ? {
+                        transition: 'all 0.3s ease',
+                      }
+                    : undefined
+                }
                 className={`
                   group relative flex-shrink-0 flex items-center gap-2 px-5 py-2.5 rounded-full 
-                  font-medium text-sm transition-all duration-300 whitespace-nowrap
+                  font-medium text-sm whitespace-nowrap
                   ${
                     isActive
                       ? 'bg-primary text-white shadow-lg scale-105 ring-2 ring-primary/30'
                       : isEmpty
                       ? 'bg-gray-100 text-gray-400 cursor-not-allowed opacity-60'
-                      : 'bg-white text-gray-700 hover:bg-primary hover:text-white hover:shadow-lg hover:scale-105 hover:ring-2 hover:ring-primary/30 border border-gray-200'
+                      : 'bg-white text-gray-700 border border-gray-200'
                   }
+                  ${!isEmpty && !isActive ? 'hover:!bg-primary hover:!text-white hover:!shadow-lg hover:!scale-105 hover:!ring-2 hover:!ring-primary/30 hover:!border-transparent' : ''}
                 `}
               >
                 {/* Mini logo (optionnel - préparé pour plus tard) */}
