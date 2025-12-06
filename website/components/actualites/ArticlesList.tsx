@@ -5,11 +5,12 @@ import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Clock, Search, SlidersHorizontal } from 'lucide-react'
+import { Clock, Search } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 import type { Article } from '@/lib/transformers'
 import { CategoryFilter } from './CategoryFilter'
+import { MediaFilter } from './MediaFilter'
 import { getCategoryGradientStyle } from '@/lib/categories-data'
 
 interface ArticlesListProps {
@@ -23,7 +24,6 @@ export function ArticlesList({ articles, categories, medias }: ArticlesListProps
   const [selectedSubCategory, setSelectedSubCategory] = useState<string | null>(null)
   const [selectedMedia, setSelectedMedia] = useState('Tous')
   const [searchQuery, setSearchQuery] = useState('')
-  const [showFilters, setShowFilters] = useState(false)
 
   const handleMainCategoryClick = (categoryId: string) => {
     if (categoryId === '') {
@@ -67,7 +67,42 @@ export function ArticlesList({ articles, categories, medias }: ArticlesListProps
 
   return (
     <>
-      {/* Category Filter - Horizontal Pills */}
+      {/* 1. RECHERCHE - En haut (sticky) */}
+      <section className="sticky top-16 z-50 bg-background/95 backdrop-blur border-b border-border shadow-sm">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex items-center gap-4">
+            {/* Search Bar */}
+            <div className="relative flex-1 max-w-2xl">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+              <Input
+                type="search"
+                placeholder="Rechercher un article..."
+                className="pl-12 h-12 text-base rounded-full border-2 focus:border-primary"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+
+            {/* Reset filters button */}
+            {(selectedMainCategory || selectedMedia !== 'Tous' || searchQuery) && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  handleMainCategoryClick('')
+                  setSelectedMedia('Tous')
+                  setSearchQuery('')
+                }}
+                className="whitespace-nowrap"
+              >
+                Réinitialiser
+              </Button>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* 2. CATÉGORIES - Au milieu */}
       <CategoryFilter
         selectedMainCategory={selectedMainCategory}
         selectedSubCategory={selectedSubCategory}
@@ -76,91 +111,20 @@ export function ArticlesList({ articles, categories, medias }: ArticlesListProps
         articles={articles}
       />
 
-      {/* Filters Section - Search and Media */}
-      <section className="sticky top-16 z-40 bg-background/95 backdrop-blur border-b border-border">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
-            {/* Search */}
-            <div className="relative flex-1 max-w-md w-full">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input
-                type="search"
-                placeholder="Rechercher un article..."
-                className="pl-10"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-            </div>
-
-            {/* Mobile Filter Toggle */}
-            <Button
-              variant="outline"
-              className="lg:hidden w-full sm:w-auto"
-              onClick={() => setShowFilters(!showFilters)}
-            >
-              <SlidersHorizontal className="h-4 w-4 mr-2" />
-              Filtres
-            </Button>
-
-            {/* Desktop Filters - Media only */}
-            <div className="hidden lg:flex items-center gap-3">
-              <span className="text-sm font-medium text-muted-foreground">Média:</span>
-              <select
-                value={selectedMedia}
-                onChange={(e) => setSelectedMedia(e.target.value)}
-                className="flex h-9 items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-              >
-                {medias.map((media) => (
-                  <option key={media} value={media}>
-                    {media === 'Tous' ? 'Tous médias' : media}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          {/* Mobile Filters - Media only */}
-          {showFilters && (
-            <div className="lg:hidden mt-4 space-y-4 pb-4 border-t border-border pt-4">
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Média</label>
-                <select
-                  value={selectedMedia}
-                  onChange={(e) => setSelectedMedia(e.target.value)}
-                  className="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-                >
-                  {medias.map((media) => (
-                    <option key={media} value={media}>
-                      {media === 'Tous' ? 'Tous médias' : media}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-          )}
-        </div>
-      </section>
+      {/* 3. MÉDIAS - En bas */}
+      <MediaFilter
+        selectedMedia={selectedMedia}
+        onMediaClick={setSelectedMedia}
+        articles={articles}
+      />
 
       {/* Articles Grid */}
       <section className="py-12 bg-background">
         <div className="container mx-auto px-4">
-          <div className="mb-6 flex items-center justify-between">
+          <div className="mb-6">
             <p className="text-sm text-muted-foreground">
               {filteredArticles.length} article{filteredArticles.length > 1 ? 's' : ''} trouvé{filteredArticles.length > 1 ? 's' : ''}
             </p>
-            {(selectedMainCategory || selectedMedia !== 'Tous' || searchQuery) && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => {
-                  handleMainCategoryClick('')
-                  setSelectedMedia('Tous')
-                  setSearchQuery('')
-                }}
-              >
-                Réinitialiser les filtres
-              </Button>
-            )}
           </div>
 
           {filteredArticles.length === 0 ? (
