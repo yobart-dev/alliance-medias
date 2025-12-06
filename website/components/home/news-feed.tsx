@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input"
 import { CTAButton } from "@/components/ui/cta-button"
 import { Clock, ArrowRight, Search, TrendingUp, ChevronLeft, ChevronRight } from "lucide-react"
 import type { Article } from "@/lib/transformers"
+import { getCategoryGradientStyle } from "@/lib/categories-data"
 
 interface NewsFeedProps {
   articles?: Article[]
@@ -76,8 +77,11 @@ export function NewsFeed({ articles = [] }: NewsFeedProps) {
                   
                   {/* Badge catégorie - en bas à gauche */}
                   <div className="absolute bottom-4 left-4 flex items-center gap-2">
-                    <Badge className="bg-primary/90 text-primary-foreground px-3 py-1 text-xs font-medium rounded-full backdrop-blur-sm">
-                      {mainArticle.category}
+                    <Badge 
+                      className="text-white px-3 py-1 text-xs font-semibold rounded-full backdrop-blur-sm shadow-lg"
+                      style={getCategoryGradientStyle(mainArticle.subCategory || mainArticle.category)}
+                    >
+                      {mainArticle.subCategory || mainArticle.category}
                     </Badge>
                     <span className="text-white/80 text-xs flex items-center gap-1">
                       <Clock className="h-3 w-3" />

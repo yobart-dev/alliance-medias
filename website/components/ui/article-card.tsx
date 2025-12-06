@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Clock, ArrowRight } from 'lucide-react'
+import { getCategoryGradientStyle } from '@/lib/categories-data'
 
 interface ArticleCardProps {
   id: string
@@ -10,6 +11,7 @@ interface ArticleCardProps {
   slug: string
   readTime: string
   category?: string
+  subCategory?: string
 }
 
 export function ArticleCard({
@@ -18,8 +20,12 @@ export function ArticleCard({
   image,
   slug,
   readTime,
-  category
+  category,
+  subCategory
 }: ArticleCardProps) {
+  // Utiliser la sous-catégorie en priorité, sinon la catégorie principale
+  const badgeCategory = subCategory || category || ''
+  const gradientStyle = getCategoryGradientStyle(badgeCategory)
   return (
     <article className="
   group h-full p-4 rounded-lg
@@ -38,9 +44,12 @@ export function ArticleCard({
             alt={title}
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
           />
-          {category && (
-            <span className="absolute top-3 left-3 bg-primary text-primary-foreground text-xs px-3 py-1 rounded-full">
-              {category}
+          {badgeCategory && (
+            <span 
+              className="absolute top-3 left-3 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-lg"
+              style={gradientStyle}
+            >
+              {badgeCategory}
             </span>
           )}
         </figure>

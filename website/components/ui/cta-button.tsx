@@ -4,11 +4,17 @@ import React from 'react'
 import { Button } from './button'
 import { cn } from '@/lib/utils'
 
+interface CTAButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  children: React.ReactNode
+  asChild?: boolean
+}
+
 export function CTAButton({ 
   className, 
-  children, 
+  children,
+  asChild,
   ...props 
-}: React.ButtonHTMLAttributes<HTMLButtonElement> & { children: React.ReactNode }) {
+}: CTAButtonProps) {
   return (
     <Button
       className={cn(
@@ -18,6 +24,7 @@ export function CTAButton({
         'hover:scale-102', // ✅ Zoom réduit (105 → 102)
         className
       )}
+      asChild={asChild}
       {...props}
     >
       {children}

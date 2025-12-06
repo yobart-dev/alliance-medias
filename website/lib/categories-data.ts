@@ -110,3 +110,51 @@ export function getAllMainCategories(): MainCategory[] {
   return categoriesData
 }
 
+// Helper pour obtenir les couleurs du gradient en format CSS
+export function getGradientColors(tailwindGradient: string): string {
+  const colorMap: Record<string, string> = {
+    'from-red-500 to-orange-500': '#ef4444, #f97316',
+    'from-green-500 to-emerald-600': '#22c55e, #059669',
+    'from-purple-500 to-pink-500': '#a855f7, #ec4899',
+    'from-blue-500 to-cyan-500': '#3b82f6, #06b6d4',
+    'from-indigo-500 to-purple-600': '#6366f1, #9333ea',
+    'from-amber-500 to-orange-500': '#f59e0b, #f97316',
+  }
+  return colorMap[tailwindGradient] || '#3b82f6, #06b6d4'
+}
+
+// Helper pour obtenir la couleur d'une catégorie à partir d'une sous-catégorie ou catégorie principale
+export function getCategoryColor(categoryOrSubCategory: string): string {
+  if (!categoryOrSubCategory) return 'from-blue-500 to-cyan-500'
+  
+  const normalized = categoryOrSubCategory.toLowerCase().trim()
+  
+  // Chercher d'abord si c'est une catégorie principale
+  const mainCategory = categoriesData.find(cat => cat.id === normalized)
+  if (mainCategory) {
+    return mainCategory.color
+  }
+
+  // Sinon, chercher dans les sous-catégories
+  for (const category of categoriesData) {
+    const subCategory = category.subCategories.find(
+      sub => sub.id === normalized
+    )
+    if (subCategory) {
+      return category.color
+    }
+  }
+
+  // Par défaut, retourner la couleur des actualités
+  return 'from-blue-500 to-cyan-500'
+}
+
+// Helper pour obtenir le style inline du gradient
+export function getCategoryGradientStyle(categoryOrSubCategory: string): { backgroundImage: string } {
+  const color = getCategoryColor(categoryOrSubCategory)
+  const colors = getGradientColors(color)
+  return {
+    backgroundImage: `linear-gradient(to right, ${colors})`,
+  }
+}
+
