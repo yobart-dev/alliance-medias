@@ -59,7 +59,7 @@ export function MediaFilter({ selectedMedia, onMediaClick, articles }: MediaFilt
                       ? 'bg-primary text-white shadow-lg scale-105 ring-2 ring-primary/30'
                       : isEmpty
                       ? 'bg-gray-100 text-gray-400 cursor-not-allowed opacity-60'
-                      : 'bg-white text-gray-700 hover:bg-primary hover:text-white hover:shadow-md border border-gray-200 hover:scale-105'
+                      : 'bg-white text-gray-700 hover:bg-primary hover:text-white hover:shadow-lg hover:scale-105 hover:ring-2 hover:ring-primary/30 border border-gray-200'
                   }
                 `}
               >

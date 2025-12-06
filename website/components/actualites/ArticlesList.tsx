@@ -73,11 +73,11 @@ export function ArticlesList({ articles, categories, medias }: ArticlesListProps
           <div className="flex items-center gap-4">
             {/* Search Bar */}
             <div className="relative flex-1 max-w-2xl">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground z-10" />
+              <Search className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground pointer-events-none" />
               <Input
                 type="search"
                 placeholder="Rechercher un article..."
-                className="pl-14 h-12 text-base rounded-full border-2 focus:border-primary"
+                className="pl-[52px] h-12 text-base rounded-full border-2 focus:border-primary"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
