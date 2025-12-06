@@ -56,10 +56,10 @@ export function MediaFilter({ selectedMedia, onMediaClick, articles }: MediaFilt
                   font-medium text-sm transition-all duration-300 whitespace-nowrap
                   ${
                     isActive
-                      ? 'bg-[#0052CC] text-white shadow-lg scale-105 ring-2 ring-[#0052CC]/30'
+                      ? 'bg-primary text-white shadow-lg scale-105 ring-2 ring-primary/30'
                       : isEmpty
                       ? 'bg-gray-100 text-gray-400 cursor-not-allowed opacity-60'
-                      : 'bg-white text-gray-700 hover:bg-[#0052CC] hover:text-white hover:shadow-md border border-gray-200'
+                      : 'bg-white text-gray-700 hover:bg-primary hover:text-white hover:shadow-md border border-gray-200 hover:scale-105'
                   }
                 `}
               >
