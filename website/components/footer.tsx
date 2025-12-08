@@ -8,7 +8,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* About */}
           <div className="space-y-4">
-            <h3 className="font-heading text-lg font-bold">L'Alliance des Médias</h3>
+            <h3 className="font-heading text-lg font-bold">L'Alliance Médias</h3>
             <p className="text-sm text-gray-300 leading-relaxed">
               Rassembler les voix de la Provence-Alpes-Côte d'Azur pour une information locale de qualité.
             </p>
@@ -107,7 +107,7 @@ export function Footer() {
         </div>
 
         <div className="mt-12 pt-8 border-t border-gray-700 text-center text-sm text-gray-400">
-          <p>&copy; {new Date().getFullYear()} L'Alliance des Médias PACA. Tous droits réservés.</p>
+          <p>&copy; {new Date().getFullYear()} L'Alliance Médias. Tous droits réservés.</p>
         </div>
       </div>
     </footer>

@@ -1,30 +1,104 @@
-# Media alliance website
+# Alliance des Médias - Site Web
 
-*Automatically synced with your [v0.app](https://v0.app) deployments*
+Site web pour l'Alliance des Médias de Provence-Alpes-Côte d'Azur, construit avec Next.js et WordPress headless.
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/yobart-devs-projects/v0-media-alliance-website)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.app-black?style=for-the-badge)](https://v0.app/chat/irNTKNPc9z6)
+## Architecture
 
-## Overview
+- **Frontend** : Next.js 16 (App Router) avec TypeScript
+- **Backend** : WordPress headless (REST API)
+- **UI** : shadcn/ui + Tailwind CSS
+- **Hébergement** : Vercel (frontend) + VPS Hostinger (WordPress)
 
-This repository will stay in sync with your deployed chats on [v0.app](https://v0.app).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.app](https://v0.app).
+## Structure du projet
 
-## Deployment
+```
+website/
+├── app/                    # Pages Next.js
+│   ├── api/               # API Routes
+│   ├── actualites/        # Page actualités
+│   ├── article/[slug]/    # Pages articles dynamiques
+│   ├── media/[slug]/      # Pages médias partenaires
+│   └── ...
+├── components/            # Composants React
+│   ├── home/             # Sections page d'accueil
+│   ├── ui/               # Composants shadcn/ui
+│   └── ...
+├── lib/                  # Utilitaires
+│   ├── wordpress.ts      # Client API WordPress
+│   ├── transformers.ts   # Transformateurs de données
+│   └── ...
+└── types/                # Types TypeScript
+```
 
-Your project is live at:
+## Installation
 
-**[https://vercel.com/yobart-devs-projects/v0-media-alliance-website](https://vercel.com/yobart-devs-projects/v0-media-alliance-website)**
+1. **Installer les dépendances**
+   ```bash
+   cd website
+   npm install
+   # ou
+   pnpm install
+   ```
 
-## Build your app
+2. **Configurer les variables d'environnement**
+   ```bash
+   cp .env.example .env.local
+   ```
+   
+   Remplir les variables dans `.env.local` :
+   ```
+   NEXT_PUBLIC_WORDPRESS_URL=https://votre-wordpress.com
+   WORDPRESS_USERNAME=votre-username
+   WORDPRESS_APPLICATION_PASSWORD=votre-password
+   WEBHOOK_SECRET_KEY=votre-cle-secrete
+   ```
 
-Continue building your app on:
+3. **Lancer le serveur de développement**
+   ```bash
+   npm run dev
+   ```
 
-**[https://v0.app/chat/irNTKNPc9z6](https://v0.app/chat/irNTKNPc9z6)**
+## Configuration WordPress
 
-## How It Works
+Voir les fichiers de documentation :
+- `WORDPRESS_SETUP.md` - Guide de configuration WordPress headless
+- `ACF_FIELDS_SETUP.md` - Configuration des champs ACF
+- `wordpress-plugin.php` - Plugin pour Custom Post Types
+- `wordpress-webhook-sender.php` - Plugin pour envoyer les articles
 
-1. Create and modify your project using [v0.app](https://v0.app)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+## Fonctionnalités
+
+- ✅ Intégration WordPress headless
+- ✅ Pages dynamiques avec ISR
+- ✅ Recherche et filtres d'articles
+- ✅ Formulaire de contact fonctionnel
+- ✅ Webhook pour recevoir des articles
+- ✅ SEO optimisé (sitemap, métadonnées)
+- ✅ Design responsive et animations
+- ✅ Optimisation des images
+
+## Scripts disponibles
+
+- `npm run dev` - Lancer le serveur de développement
+- `npm run build` - Construire pour la production
+- `npm run start` - Lancer le serveur de production
+- `npm run lint` - Vérifier le code
+
+## Déploiement
+
+### Frontend (Vercel)
+
+1. Connecter votre repository GitHub à Vercel
+2. Configurer les variables d'environnement dans Vercel
+3. Déployer automatiquement
+
+### Backend (WordPress)
+
+1. Installer WordPress sur votre VPS
+2. Installer les plugins nécessaires (ACF, etc.)
+3. Activer le plugin `wordpress-plugin.php`
+4. Configurer les champs ACF selon `ACF_FIELDS_SETUP.md`
+
+## Support
+
+Pour toute question ou problème, consultez la documentation dans les fichiers `.md` ou contactez l'équipe de développement.

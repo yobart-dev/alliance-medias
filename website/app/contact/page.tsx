@@ -1,11 +1,9 @@
 import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
 import { Card } from '@/components/ui/card'
-import { Label } from '@/components/ui/label'
-import { Mail, Phone, MapPin, Send } from 'lucide-react'
+import { ContactForm } from '@/components/contact/ContactForm'
+import { Mail, Phone, MapPin } from 'lucide-react'
 
 export default function ContactPage() {
   return (
@@ -85,60 +83,7 @@ export default function ContactPage() {
                 </div>
 
                 {/* Contact Form */}
-                <Card className="lg:col-span-2 p-8">
-                  <form className="space-y-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div className="space-y-2">
-                        <Label htmlFor="firstName">Prénom</Label>
-                        <Input id="firstName" placeholder="Jean" />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="lastName">Nom</Label>
-                        <Input id="lastName" placeholder="Dupont" />
-                      </div>
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="email">Email</Label>
-                      <Input id="email" type="email" placeholder="jean.dupont@exemple.fr" />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="subject">Sujet</Label>
-                      <select 
-                        id="subject" 
-                        className="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                      >
-                        <option value="">Sélectionnez un sujet</option>
-                        <option value="partenariat">Proposition de partenariat</option>
-                        <option value="presse">Demande presse</option>
-                        <option value="publicite">Régie publicitaire</option>
-                        <option value="autre">Autre demande</option>
-                      </select>
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="message">Message</Label>
-                      <Textarea 
-                        id="message" 
-                        placeholder="Votre message..." 
-                        className="min-h-[150px]"
-                      />
-                    </div>
-
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <input type="checkbox" id="consent" className="rounded border-gray-300 text-primary focus:ring-primary" />
-                      <label htmlFor="consent">
-                        J'accepte que mes données soient traitées pour répondre à ma demande.
-                      </label>
-                    </div>
-
-                    <Button type="submit" size="lg" className="w-full md:w-auto">
-                      Envoyer le message
-                      <Send className="ml-2 h-4 w-4" />
-                    </Button>
-                  </form>
-                </Card>
+                <ContactForm />
               </div>
             </div>
           </div>
