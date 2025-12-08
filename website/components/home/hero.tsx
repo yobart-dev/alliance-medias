@@ -9,7 +9,7 @@ export function Hero() {
     { name: "Sport MED", src: "/sport-med.webp" },
     { name: "L'EFM", src: "/LEHTV-logo-medias.png.webp" },
     { name: "mprovence", src: "/LOGO-MPROVENCE-768x154.png.webp" },
-    { name: "Marcelle", src: "/marcelle-logo.webp" },
+    { name: "Marcelle", src: "/marcelle-logo-white.webp" },
     { name: "Fréquence Mistral", src: "/frequence-mistral-logo.png.webp" },
   ]
 
@@ -112,7 +112,7 @@ export function Hero() {
           {/* Logo principal */}
           <div className="relative w-full max-w-4xl animate-in fade-in slide-in-from-bottom-8 duration-1000">
             <Image
-              src="/logo-alliance-medias-white-transp.webp"
+              src="/logo-alliance-medias-white.webp"
               alt="L'Alliance Médias PACA"
               width={900}
               height={300}
