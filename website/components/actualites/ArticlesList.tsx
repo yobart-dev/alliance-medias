@@ -19,7 +19,8 @@ interface ArticlesListProps {
   medias: string[]
 }
 
-const ARTICLES_PER_PAGE = 9 // Nombre d'articles par page
+// Options disponibles pour le nombre d'articles par page
+const ARTICLES_PER_PAGE_OPTIONS = [9, 12, 18, 24, 30, 36, 48]
 
 export function ArticlesList({ articles, categories, medias }: ArticlesListProps) {
   const [selectedMainCategory, setSelectedMainCategory] = useState<string | null>(null)
@@ -27,6 +28,7 @@ export function ArticlesList({ articles, categories, medias }: ArticlesListProps
   const [selectedMedia, setSelectedMedia] = useState('Tous')
   const [searchQuery, setSearchQuery] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
+  const [articlesPerPage, setArticlesPerPage] = useState(9)
 
   const handleMainCategoryClick = (categoryId: string) => {
     if (categoryId === '') {
@@ -60,6 +62,11 @@ export function ArticlesList({ articles, categories, medias }: ArticlesListProps
     setCurrentPage(1) // Reset to page 1 when search changes
   }
 
+  const handleArticlesPerPageChange = (value: number) => {
+    setArticlesPerPage(value)
+    setCurrentPage(1) // Reset to page 1 when changing items per page
+  }
+
   const filteredArticles = useMemo(() => {
     return articles.filter(article => {
       // Filtrage par catégorie hiérarchique
@@ -81,9 +88,9 @@ export function ArticlesList({ articles, categories, medias }: ArticlesListProps
   }, [articles, selectedMainCategory, selectedSubCategory, selectedMedia, searchQuery])
 
   // Calculs de pagination
-  const totalPages = Math.ceil(filteredArticles.length / ARTICLES_PER_PAGE)
-  const startIndex = (currentPage - 1) * ARTICLES_PER_PAGE
-  const endIndex = startIndex + ARTICLES_PER_PAGE
+  const totalPages = Math.ceil(filteredArticles.length / articlesPerPage)
+  const startIndex = (currentPage - 1) * articlesPerPage
+  const endIndex = startIndex + articlesPerPage
   const paginatedArticles = filteredArticles.slice(startIndex, endIndex)
 
   // Gérer le changement de filtre qui pourrait laisser la page actuelle hors limites
@@ -149,10 +156,29 @@ export function ArticlesList({ articles, categories, medias }: ArticlesListProps
       {/* Articles Grid */}
       <section className="py-12 bg-background">
         <div className="container mx-auto px-4">
-          <div className="mb-6">
+          {/* Compteur et sélecteur d'articles par page */}
+          <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <p className="text-sm text-muted-foreground">
               {filteredArticles.length} article{filteredArticles.length > 1 ? 's' : ''} trouvé{filteredArticles.length > 1 ? 's' : ''}
             </p>
+            
+            <div className="flex items-center gap-3">
+              <label htmlFor="articles-per-page" className="text-sm text-muted-foreground whitespace-nowrap">
+                Articles par page :
+              </label>
+              <select
+                id="articles-per-page"
+                value={articlesPerPage}
+                onChange={(e) => handleArticlesPerPageChange(Number(e.target.value))}
+                className="h-10 px-4 rounded-lg border-2 border-input bg-background text-sm font-medium hover:border-primary focus:border-primary focus:outline-none transition-colors cursor-pointer"
+              >
+                {ARTICLES_PER_PAGE_OPTIONS.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
 
           {filteredArticles.length === 0 ? (
