@@ -23,9 +23,9 @@ const navigation = [
 export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full">
-      <div className="bg-primary text-primary-foreground py-2 px-4">
+      <div className="bg-primary text-primary-foreground py-3 px-4">
         <div className="container mx-auto px-4">
-          <div className="flex items-center gap-3 text-sm overflow-x-auto">
+          <div className="flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-3 text-sm">
             <div className="flex items-center gap-2 whitespace-nowrap font-bold">
               <AlertCircle className="h-4 w-4 flex-shrink-0" />
               BREAKING NEWS
@@ -67,14 +67,14 @@ export function Header() {
             {/* Mobile Navigation */}
             <Sheet>
               <SheetTrigger asChild className="md:hidden">
-                <Button variant="ghost" size="icon">
-                  <Menu className="h-6 w-6" />
+                <Button variant="ghost" size="icon" className="mobile-menu-trigger">
+                  <Menu className="mobile-menu-icon" />
                   <span className="sr-only">Toggle menu</span>
                 </Button>
               </SheetTrigger>
               <SheetContent 
                 side="right" 
-                className="w-full max-w-full border-none bg-gradient-to-br from-slate-900/95 via-slate-800/95 to-primary/40 backdrop-blur-sm"
+                className="w-full max-w-full border-none bg-gradient-to-br from-slate-900/70 via-slate-800/70 to-primary/40 backdrop-blur-sm !bg-transparent"
               >
                 <SheetTitle className="sr-only">Menu de navigation</SheetTitle>
                 <nav className="flex flex-col gap-8 mt-24 ml-8">
