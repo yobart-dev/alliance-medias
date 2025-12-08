@@ -19,11 +19,14 @@ interface ArticlesListProps {
   medias: string[]
 }
 
+const ARTICLES_PER_PAGE = 9 // Nombre d'articles par page
+
 export function ArticlesList({ articles, categories, medias }: ArticlesListProps) {
   const [selectedMainCategory, setSelectedMainCategory] = useState<string | null>(null)
   const [selectedSubCategory, setSelectedSubCategory] = useState<string | null>(null)
   const [selectedMedia, setSelectedMedia] = useState('Tous')
   const [searchQuery, setSearchQuery] = useState('')
+  const [currentPage, setCurrentPage] = useState(1)
 
   const handleMainCategoryClick = (categoryId: string) => {
     if (categoryId === '') {
@@ -38,11 +41,23 @@ export function ArticlesList({ articles, categories, medias }: ArticlesListProps
       setSelectedMainCategory(categoryId)
       setSelectedSubCategory(null) // Reset sub-category when main changes
     }
+    setCurrentPage(1) // Reset to page 1 when filter changes
   }
 
   const handleSubCategoryClick = (mainCategoryId: string, subCategoryId: string) => {
     setSelectedMainCategory(mainCategoryId)
     setSelectedSubCategory(subCategoryId)
+    setCurrentPage(1) // Reset to page 1 when filter changes
+  }
+
+  const handleMediaChange = (media: string) => {
+    setSelectedMedia(media)
+    setCurrentPage(1) // Reset to page 1 when filter changes
+  }
+
+  const handleSearchChange = (query: string) => {
+    setSearchQuery(query)
+    setCurrentPage(1) // Reset to page 1 when search changes
   }
 
   const filteredArticles = useMemo(() => {
@@ -65,6 +80,19 @@ export function ArticlesList({ articles, categories, medias }: ArticlesListProps
     })
   }, [articles, selectedMainCategory, selectedSubCategory, selectedMedia, searchQuery])
 
+  // Calculs de pagination
+  const totalPages = Math.ceil(filteredArticles.length / ARTICLES_PER_PAGE)
+  const startIndex = (currentPage - 1) * ARTICLES_PER_PAGE
+  const endIndex = startIndex + ARTICLES_PER_PAGE
+  const paginatedArticles = filteredArticles.slice(startIndex, endIndex)
+
+  // Gérer le changement de filtre qui pourrait laisser la page actuelle hors limites
+  useMemo(() => {
+    if (currentPage > totalPages && totalPages > 0) {
+      setCurrentPage(1)
+    }
+  }, [currentPage, totalPages])
+
   return (
     <>
       {/* 1. RECHERCHE - En haut (sticky) */}
@@ -79,7 +107,7 @@ export function ArticlesList({ articles, categories, medias }: ArticlesListProps
                 placeholder="Rechercher un article..."
                 className="pl-16 h-12 text-base rounded-full border-2 focus:border-primary"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={(e) => handleSearchChange(e.target.value)}
               />
             </div>
 
@@ -114,7 +142,7 @@ export function ArticlesList({ articles, categories, medias }: ArticlesListProps
       {/* 3. MÉDIAS - En bas */}
       <MediaFilter
         selectedMedia={selectedMedia}
-        onMediaClick={setSelectedMedia}
+        onMediaClick={handleMediaChange}
         articles={articles}
       />
 
@@ -134,8 +162,9 @@ export function ArticlesList({ articles, categories, medias }: ArticlesListProps
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredArticles.map((article) => (
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {paginatedArticles.map((article) => (
                 <Link key={article.id} href={`/article/${article.slug}`}>
                   <Card className="h-full overflow-hidden group hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
                     <div className="aspect-video relative overflow-hidden bg-muted">
@@ -185,7 +214,66 @@ export function ArticlesList({ articles, categories, medias }: ArticlesListProps
                   </Card>
                 </Link>
               ))}
-            </div>
+              </div>
+
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <div className="mt-12 flex justify-center items-center gap-2">
+                  {/* Previous button */}
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                    disabled={currentPage === 1}
+                    className="gap-2"
+                  >
+                    ← Précédent
+                  </Button>
+
+                  {/* Page numbers */}
+                  <div className="flex gap-1">
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => {
+                      // Show first page, last page, current page, and pages around current
+                      const showPage = 
+                        page === 1 || 
+                        page === totalPages || 
+                        Math.abs(page - currentPage) <= 1
+
+                      if (!showPage) {
+                        // Show ellipsis
+                        if (page === currentPage - 2 || page === currentPage + 2) {
+                          return <span key={page} className="px-2 text-muted-foreground">...</span>
+                        }
+                        return null
+                      }
+
+                      return (
+                        <Button
+                          key={page}
+                          variant={currentPage === page ? "default" : "outline"}
+                          size="sm"
+                          onClick={() => setCurrentPage(page)}
+                          className={currentPage === page ? "bg-primary" : ""}
+                        >
+                          {page}
+                        </Button>
+                      )
+                    })}
+                  </div>
+
+                  {/* Next button */}
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                    disabled={currentPage === totalPages}
+                    className="gap-2"
+                  >
+                    Suivant →
+                  </Button>
+                </div>
+              )}
+            </>
           )}
         </div>
       </section>
