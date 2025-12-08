@@ -47,26 +47,41 @@ export function Hero() {
           </div>
 
           {/* Logo principal */}
-          <div className="relative w-full max-w-2xl animate-in fade-in slide-in-from-bottom-8 duration-1000">
+          <div className="relative w-full max-w-4xl animate-in fade-in slide-in-from-bottom-8 duration-1000">
             <Image
-              src="/logo-alliance-medias.webp"
+              src="/logo-alliance-medias-white-transp.webp"
               alt="L'Alliance Médias PACA"
-              width={600}
-              height={200}
+              width={900}
+              height={300}
               priority
               className="w-full h-auto drop-shadow-2xl"
             />
           </div>
 
-          {/* Titre principal */}
-          <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-300">
-            L'Alliance Médias
-          </h1>
+          {/* Logos des médias adhérents - Juste sous le logo */}
+          <div className="w-full max-w-4xl animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-300">
+            <div className="grid grid-cols-3 md:grid-cols-6 gap-6 md:gap-8 items-center justify-items-center">
+              {mediaLogos.map((media) => (
+                <div 
+                  key={media.name} 
+                  className="relative w-24 h-16 md:w-28 md:h-20 grayscale hover:grayscale-0 opacity-70 hover:opacity-100 transition-all duration-300 hover:scale-110 cursor-pointer"
+                >
+                  <Image
+                    src={media.src}
+                    alt={media.name}
+                    fill
+                    className="object-contain"
+                    sizes="(max-width: 768px) 33vw, 16vw"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
 
-          {/* Baseline */}
-          <p className="text-xl md:text-2xl lg:text-3xl text-white/90 max-w-3xl leading-relaxed animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-500">
+          {/* Main title */}
+          <h1 className="text-2xl md:text-3xl lg:text-4xl text-white/90 max-w-3xl leading-relaxed animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-500">
             L'information <span className="text-sky-300 font-semibold">locale, unie et plurielle</span>
-          </p>
+          </h1>
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 pt-4 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-700">
@@ -88,29 +103,6 @@ export function Hero() {
             >
               <Link href="/actualites">Voir les actualités</Link>
             </Button>
-          </div>
-
-          {/* Logos des médias adhérents */}
-          <div className="w-full max-w-5xl pt-16 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-1000">
-            <p className="text-white/60 text-sm uppercase tracking-wider font-medium mb-8">
-              6 médias partenaires
-            </p>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 items-center justify-items-center">
-              {mediaLogos.map((media) => (
-                <div 
-                  key={media.name} 
-                  className="relative w-28 h-20 grayscale hover:grayscale-0 opacity-70 hover:opacity-100 transition-all duration-300 hover:scale-110 cursor-pointer"
-                >
-                  <Image
-                    src={media.src}
-                    alt={media.name}
-                    fill
-                    className="object-contain"
-                    sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 16vw"
-                  />
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </div>
