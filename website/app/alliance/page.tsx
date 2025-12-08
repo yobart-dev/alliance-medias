@@ -5,13 +5,29 @@ import { ArrowRight, MapPin, Users, Award, Handshake, Radio, Shield, Target, Tre
 import Link from 'next/link'
 import Image from 'next/image'
 import { mockMediaPartners } from '@/lib/mock-data'
-import { InteractiveMap } from '@/components/alliance/InteractiveMap'
+import dynamic from 'next/dynamic'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: "L'Alliance Médias - Notre Mission",
   description: "Six médias indépendants unis pour une information locale fiable, riche et engagée en Provence-Alpes-Côte d'Azur.",
 }
+
+const InteractiveMap = dynamic(
+  () => import('@/components/alliance/InteractiveMap').then(mod => mod.InteractiveMap),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="h-[600px] lg:h-[700px] bg-gray-50 rounded-3xl overflow-hidden shadow-2xl flex items-center justify-center">
+        <div className="text-center p-16">
+          <h3 className="text-3xl font-bold text-primary mb-5">
+            Chargement de la carte...
+          </h3>
+        </div>
+      </div>
+    ),
+  }
+)
 
 export default function AlliancePage() {
   return (
