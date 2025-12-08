@@ -157,20 +157,20 @@ export function ArticlesList({ articles, categories, medias }: ArticlesListProps
       <section className="py-12 bg-background">
         <div className="container mx-auto px-4">
           {/* Compteur et sélecteur d'articles par page */}
-          <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div className="mb-6 flex items-center justify-between gap-4">
             <p className="text-sm text-muted-foreground">
               {filteredArticles.length} article{filteredArticles.length > 1 ? 's' : ''} trouvé{filteredArticles.length > 1 ? 's' : ''}
             </p>
             
-            <div className="flex items-center gap-3">
-              <label htmlFor="articles-per-page" className="text-sm text-muted-foreground whitespace-nowrap">
-                Articles par page :
+            <div className="flex items-center gap-2">
+              <label htmlFor="articles-per-page" className="text-xs text-muted-foreground whitespace-nowrap">
+                Afficher
               </label>
               <select
                 id="articles-per-page"
                 value={articlesPerPage}
                 onChange={(e) => handleArticlesPerPageChange(Number(e.target.value))}
-                className="h-10 px-4 rounded-lg border-2 border-input bg-background text-sm font-medium hover:border-primary focus:border-primary focus:outline-none transition-colors cursor-pointer"
+                className="h-8 px-3 py-0 rounded-md border border-input bg-background text-sm font-medium hover:bg-accent hover:text-accent-foreground focus:border-primary focus:outline-none transition-colors cursor-pointer"
               >
                 {ARTICLES_PER_PAGE_OPTIONS.map((option) => (
                   <option key={option} value={option}>
@@ -178,6 +178,9 @@ export function ArticlesList({ articles, categories, medias }: ArticlesListProps
                   </option>
                 ))}
               </select>
+              <span className="text-xs text-muted-foreground whitespace-nowrap">
+                par page
+              </span>
             </div>
           </div>
 
