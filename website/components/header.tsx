@@ -37,15 +37,15 @@ export function Header() {
 
       {/* Main navigation header */}
       <div className="border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 md:px-6 lg:px-8">
           <div className="flex h-24 items-center justify-between">
             <Link href="/" className="flex items-center">
-              <div className="relative h-20 w-60">
+              <div className="relative h-16 w-52">
                 <Image
                   src="/logo-alliance-medias.webp"
                   alt="L'Alliance Médias"
                   fill
-                  className="object-contain"
+                  className="object-contain object-left"
                   priority
                 />
               </div>
@@ -68,18 +68,21 @@ export function Header() {
             <Sheet>
               <SheetTrigger asChild className="md:hidden">
                 <Button variant="ghost" size="icon">
-                  <Menu className="h-5 w-5" />
+                  <Menu className="h-6 w-6" />
                   <span className="sr-only">Toggle menu</span>
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right">
+              <SheetContent 
+                side="right" 
+                className="w-full max-w-full border-none bg-gradient-to-br from-slate-900/95 via-slate-800/95 to-primary/40 backdrop-blur-sm"
+              >
                 <SheetTitle className="sr-only">Menu de navigation</SheetTitle>
-                <nav className="flex flex-col gap-4 mt-8">
+                <nav className="flex flex-col gap-8 mt-24 ml-8">
                   {navigation.map((item) => (
                     <Link
                       key={item.name}
                       href={item.href}
-                      className="text-lg font-medium text-foreground/80 transition-colors hover:text-primary"
+                      className="text-2xl font-bold text-white/90 transition-all duration-300 hover:text-white hover:translate-x-2"
                     >
                       {item.name}
                     </Link>
