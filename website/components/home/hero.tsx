@@ -4,65 +4,112 @@ import Link from "next/link"
 import Image from "next/image"
 
 export function Hero() {
+  const mediaLogos = [
+    { name: "Bleu Tomate", src: "/Logo-bleue-tomates-medias.jpg.webp" },
+    { name: "Sport MED", src: "/sport-med.webp" },
+    { name: "L'EFM", src: "/LEHTV-logo-medias.png.webp" },
+    { name: "mprovence", src: "/LOGO-MPROVENCE-768x154.png.webp" },
+    { name: "Marcelle", src: "/marcelle-logo.webp" },
+    { name: "Fréquence Mistral", src: "/frequence-mistral-logo.png.webp" },
+  ]
+
   return (
-    <section className="relative overflow-hidden h-screen md:h-[600px] lg:h-[700px] flex items-center justify-center">
-      <div className="absolute inset-0">
-        <Image
-          src="/provence-alpes-cote-azur-marseille-alliance-medias.webp"
-          alt="Provence-Alpes-Côte d'Azur - Alliance des Médias"
-          fill
-          priority
-          className="object-cover"
-          sizes="100vw"
-          quality={90}
-        />
+    <section className="relative overflow-hidden min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-950 via-primary to-slate-900">
+      {/* Animated network background pattern */}
+      <div className="absolute inset-0 opacity-10">
+        <div className="absolute top-20 left-20 w-32 h-32 rounded-full border-2 border-white/30 animate-pulse" />
+        <div className="absolute top-40 right-32 w-24 h-24 rounded-full border-2 border-white/20" />
+        <div className="absolute bottom-32 left-1/4 w-16 h-16 rounded-full border-2 border-white/40 animate-pulse delay-300" />
+        <div className="absolute bottom-20 right-1/4 w-20 h-20 rounded-full border-2 border-white/30 animate-pulse delay-500" />
+        <div className="absolute top-1/2 left-1/2 w-40 h-40 rounded-full border-2 border-white/20" />
       </div>
 
-      {/* Sky gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-sky-400/40 via-transparent to-sky-200/30" />
+      {/* Gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/20 to-slate-900/80" />
 
-      {/* Dark overlay for text contrast */}
-      <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/30 to-transparent" />
-
-      {/* Sea-inspired wave accent */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-primary/20 via-primary/5 to-transparent" />
-
-      {/* Content */}
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-3xl">
-          <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-1000">
-            <div className="inline-block animate-in fade-in slide-in-from-left-4 duration-700 delay-150">
-              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-sky-500/20 backdrop-blur-sm border border-sky-300/30 text-sky-100 text-sm font-medium hover:bg-sky-500/30 transition-colors">
-                <span className="h-2 w-2 rounded-full bg-sky-300 animate-pulse" />
-                Provence-Alpes-Côte d'Azur
-              </span>
+      {/* Main content container */}
+      <div className="container mx-auto px-4 relative z-10 py-20">
+        <div className="flex flex-col items-center text-center space-y-12">
+          
+          {/* Network visual decoration */}
+          <div className="relative w-full max-w-4xl flex justify-center items-center gap-8 mb-8 opacity-30">
+            <div className="flex items-center gap-3">
+              <div className="w-3 h-3 rounded-full bg-sky-400 animate-pulse" />
+              <div className="w-4 h-4 rounded-full bg-sky-300 animate-pulse delay-150" />
             </div>
+            <div className="w-6 h-6 rounded-full bg-primary animate-pulse delay-300" />
+            <div className="w-1 h-16 bg-gradient-to-b from-primary/50 to-transparent" />
+            <div className="w-6 h-6 rounded-full bg-primary animate-pulse delay-500" />
+            <div className="flex items-center gap-3">
+              <div className="w-4 h-4 rounded-full bg-sky-300 animate-pulse delay-700" />
+              <div className="w-3 h-3 rounded-full bg-sky-400 animate-pulse delay-1000" />
+            </div>
+          </div>
 
-            <h1 className="font-heading text-5xl md:text-6xl lg:text-7xl font-bold text-white text-balance leading-tight drop-shadow-lg animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-300">
-              L'information <span className="text-sky-300">locale, unie</span> et{" "}
-              <span className="text-amber-300">plurielle</span>
-            </h1>
+          {/* Logo principal */}
+          <div className="relative w-full max-w-2xl animate-in fade-in slide-in-from-bottom-8 duration-1000">
+            <Image
+              src="/logo-alliance-medias.webp"
+              alt="L'Alliance Médias PACA"
+              width={600}
+              height={200}
+              priority
+              className="w-full h-auto drop-shadow-2xl"
+            />
+          </div>
 
-            <p className="text-lg md:text-xl text-sky-50 max-w-2xl text-pretty leading-relaxed drop-shadow-md animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-500">
-              Découvrez l'actualité de votre région à travers six médias locaux spécialisés. Une alliance pour une
-              information de proximité, diversifiée et de qualité.
+          {/* Titre principal */}
+          <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-300">
+            L'Alliance Médias
+          </h1>
+
+          {/* Baseline */}
+          <p className="text-xl md:text-2xl lg:text-3xl text-white/90 max-w-3xl leading-relaxed animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-500">
+            L'information <span className="text-sky-300 font-semibold">locale, unie et plurielle</span>
+          </p>
+
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 pt-4 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-700">
+            <Button 
+              size="lg" 
+              className="gap-2 group bg-white text-primary hover:bg-white/90 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 text-base px-8 py-6" 
+              asChild
+            >
+              <Link href="#medias">
+                Découvrir nos médias
+                <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              className="border-2 border-white/40 bg-white/5 backdrop-blur-sm text-white hover:bg-white/15 transition-all duration-300 hover:scale-105 text-base px-8 py-6"
+              asChild
+            >
+              <Link href="/actualites">Voir les actualités</Link>
+            </Button>
+          </div>
+
+          {/* Logos des médias adhérents */}
+          <div className="w-full max-w-5xl pt-16 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-1000">
+            <p className="text-white/60 text-sm uppercase tracking-wider font-medium mb-8">
+              6 médias partenaires
             </p>
-
-            <div className="flex flex-col sm:flex-row gap-4 pt-6 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-700">
-              <Button size="lg" className="gap-2 group bg-sky-500 hover:bg-sky-600 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105" asChild>
-                <Link href="#medias">
-                  Découvrir nos médias
-                  <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                </Link>
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-white/30 bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 transition-all duration-300 hover:scale-105"
-                asChild
-              >
-                <Link href="/actualites">Voir les actualités</Link>
-              </Button>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 items-center justify-items-center">
+              {mediaLogos.map((media) => (
+                <div 
+                  key={media.name} 
+                  className="relative w-28 h-20 grayscale hover:grayscale-0 opacity-70 hover:opacity-100 transition-all duration-300 hover:scale-110 cursor-pointer"
+                >
+                  <Image
+                    src={media.src}
+                    alt={media.name}
+                    fill
+                    className="object-contain"
+                    sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 16vw"
+                  />
+                </div>
+              ))}
             </div>
           </div>
         </div>
