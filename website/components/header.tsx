@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import { Menu, AlertCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
@@ -38,10 +39,15 @@ export function Header() {
       <div className="border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container mx-auto px-4">
           <div className="flex h-16 items-center justify-between">
-            <Link href="/" className="flex items-center gap-2">
-              <div className="flex items-center gap-2">
-                <div className="h-8 w-8 rounded-full bg-primary" />
-                <span className="font-heading text-xl font-bold">L'Alliance Médias</span>
+            <Link href="/" className="flex items-center">
+              <div className="relative h-12 w-48">
+                <Image
+                  src="/logo-alliance-medias.webp"
+                  alt="L'Alliance Médias"
+                  fill
+                  className="object-contain"
+                  priority
+                />
               </div>
             </Link>
 
