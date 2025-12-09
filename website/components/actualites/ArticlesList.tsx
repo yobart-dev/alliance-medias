@@ -102,8 +102,8 @@ export function ArticlesList({ articles, categories, medias }: ArticlesListProps
 
   return (
     <>
-      {/* 1. RECHERCHE - En haut (sticky) */}
-      <section className="sticky top-16 z-50 bg-background/95 backdrop-blur border-b border-border shadow-sm">
+      {/* 1. RECHERCHE - En haut */}
+      <section className="bg-background/95 backdrop-blur border-b border-border shadow-sm">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center gap-4">
             {/* Search Bar */}

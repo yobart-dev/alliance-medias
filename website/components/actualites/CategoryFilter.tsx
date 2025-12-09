@@ -71,6 +71,7 @@ export function CategoryFilter({
   onSubCategoryClick,
   articles,
 }: CategoryFilterProps) {
+  const [headerOffset, setHeaderOffset] = useState<number>(0)
   // Compter les articles par sous-catégorie
   const getArticleCount = (mainCategoryId: string, subCategoryId: string) => {
     return articles.filter(
@@ -80,6 +81,7 @@ export function CategoryFilter({
   const [hoveredCategory, setHoveredCategory] = useState<string | null>(null)
   const [openMobileCategory, setOpenMobileCategory] = useState<string | null>(null)
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const resizeObserverRef = useRef<ResizeObserver | null>(null)
 
   // Nettoyer les timeouts
   useEffect(() => {
@@ -87,6 +89,36 @@ export function CategoryFilter({
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current)
       }
+      if (resizeObserverRef.current) {
+        resizeObserverRef.current.disconnect()
+      }
+    }
+  }, [])
+
+  // Mesurer dynamiquement la hauteur du header (breaking news + nav) pour caler le sticky
+  useEffect(() => {
+    const headerEl = document.querySelector('header')
+    if (!headerEl) return
+
+    const updateOffset = () => {
+      const { height } = headerEl.getBoundingClientRect()
+      setHeaderOffset(height)
+    }
+
+    // Mesure initiale
+    updateOffset()
+
+    // Surveille les changements de taille du header (responsive, contenu dynamique)
+    const resizeObserver = new ResizeObserver(updateOffset)
+    resizeObserver.observe(headerEl)
+    resizeObserverRef.current = resizeObserver
+
+    // Recalcule aussi sur resize viewport
+    window.addEventListener('resize', updateOffset)
+
+    return () => {
+      resizeObserver.disconnect()
+      window.removeEventListener('resize', updateOffset)
     }
   }, [])
 
@@ -141,7 +173,10 @@ export function CategoryFilter({
   }
 
   return (
-    <div className="relative bg-white border-b border-gray-200">
+    <div
+      className="sticky z-40 bg-white border-b border-gray-200"
+      style={{ top: headerOffset ? `${headerOffset}px` : undefined }}
+    >
       <div className="container mx-auto px-4 py-4">
         {/* Pills container with horizontal scroll */}
         <div className="flex items-center gap-3 overflow-x-auto scrollbar-hide relative pb-2">
