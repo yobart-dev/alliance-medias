@@ -114,7 +114,7 @@ export async function GET() {
       media_source: 'Sport MED',
       category: 'Sport',
       read_time: '5 min',
-      featured_image_url: 'https://example.com/image.jpg',
+      featured_image_url: 'https://example.com/image.webp',
       status: 'publish',
     },
   })

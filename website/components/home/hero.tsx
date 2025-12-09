@@ -116,7 +116,8 @@ export function Hero() {
               alt="L'Alliance Médias PACA"
               width={900}
               height={300}
-              priority
+              priority={true}
+              fetchPriority="high"
               className="w-full h-auto drop-shadow-2xl"
             />
           </div>

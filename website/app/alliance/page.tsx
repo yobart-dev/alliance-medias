@@ -239,7 +239,7 @@ export default function AlliancePage() {
                 <div className="absolute inset-0 bg-gradient-to-br from-[#0052CC]/5 to-transparent" />
                 <div className="absolute inset-0 flex items-center justify-center p-12 text-center">
                   <img 
-                    src="/journalists-meeting-collaboration.jpg" 
+                    src="/journalists-meeting-collaboration.webp" 
                     alt="Journalistes en collaboration" 
                     className="w-full h-full object-cover rounded-2xl"
                   />
