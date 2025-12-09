@@ -32,15 +32,15 @@ export function MediaFilter({ selectedMedia, onMediaClick, articles }: MediaFilt
 
   return (
     <div className="relative bg-gradient-to-r from-slate-50 to-white border-b border-gray-200">
-      <div className="container mx-auto px-4 py-4">
+      <div className="container mx-auto p-2">
         {/* Label */}
-        <div className="flex items-center gap-2 mb-3">
+        <div className="flex items-center gap-2 mb-3 p-2">
           <span className="text-sm font-semibold text-gray-700">📰 Médias de l'Alliance</span>
           <span className="text-xs text-muted-foreground">({mockMediaPartners.length} médias partenaires)</span>
         </div>
 
         {/* Pills container with horizontal scroll */}
-        <div className="flex items-center gap-3 overflow-x-auto scrollbar-hide pb-2">
+        <div className="flex items-center gap-3 overflow-x-auto scrollbar-hide p-2">
           {mediasList.map((media) => {
             const isActive = selectedMedia === media.name
             const count = getArticleCount(media.name)

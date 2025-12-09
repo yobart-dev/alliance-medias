@@ -177,9 +177,9 @@ export function CategoryFilter({
       className="sticky z-40 bg-white border-b border-gray-200"
       style={{ top: headerOffset ? `${headerOffset}px` : undefined }}
     >
-      <div className="container mx-auto px-4 py-4">
+      <div className="container mx-auto p-2">
         {/* Pills container with horizontal scroll */}
-        <div className="flex items-center gap-3 overflow-x-auto scrollbar-hide relative pb-2">
+        <div className="flex items-center gap-3 overflow-x-auto scrollbar-hide relative p-2">
           {/* Bouton "Tous" */}
           <button
             onClick={handleResetFilters}
