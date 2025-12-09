@@ -169,3 +169,46 @@ html {
   background: transparent !important;
   border: none !important;
 }
+
+/* ------------------------------------------------------------
+   Mobile burger button (CSS override to keep control outside Tailwind)
+   High specificity + !important to surpass component styles
+-------------------------------------------------------------*/
+@layer base {
+  .mobile-menu-trigger {
+    width: 52px !important;
+    height: 52px !important;
+    border-radius: 14px !important;
+    background: linear-gradient(135deg, #0b3a7a 0%, #0f52c4 100%) !important;
+    color: #fff !important;
+    box-shadow: 0 12px 30px rgba(0, 40, 120, 0.25) !important;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                background 0.35s ease !important;
+  }
+
+  .mobile-menu-trigger:hover {
+    transform: translateY(-1px) scale(1.02) !important;
+    box-shadow: 0 14px 36px rgba(0, 40, 120, 0.3) !important;
+  }
+
+  .mobile-menu-trigger:active {
+    transform: translateY(1px) scale(0.98) !important;
+    box-shadow: 0 10px 24px rgba(0, 40, 120, 0.22) !important;
+  }
+
+  .mobile-menu-icon {
+    width: 26px !important;
+    height: 26px !important;
+    stroke-width: 2.3 !important;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+
+  .mobile-menu-trigger:hover .mobile-menu-icon {
+    transform: scale(1.05) !important;
+  }
+
+  .mobile-menu-trigger:active .mobile-menu-icon {
+    transform: scale(0.95) !important;
+  }
+}
